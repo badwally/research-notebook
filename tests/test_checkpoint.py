@@ -174,3 +174,67 @@ def test_write_checkpoint_only_includes_scored_videos(tmp_path):
     loaded = read_checkpoint(str(path))
     assert len(loaded["videos"]) == 2
     assert all(v["included"] for v in loaded["videos"])
+
+
+def test_write_item_checkpoint_roundtrip(tmp_path):
+    from src.stage.checkpoint import write_item_checkpoint
+    items = [_make_item("arxiv:001", "arxiv", 5, True), _make_item("arxiv:002", "arxiv", 2, False)]
+    path = tmp_path / "test_item_checkpoint.json"
+
+    write_item_checkpoint(
+        path=str(path),
+        research_project="ai_temporal_video",
+        query_terms=["temporal video", "video transformers"],
+        research_criteria_version="0.1.0",
+        items=items,
+        sources_used=["arxiv"],
+    )
+
+    loaded = read_checkpoint(str(path))
+    assert "items" in loaded
+    assert "videos" not in loaded
+    assert loaded["metadata"]["research_project"] == "ai_temporal_video"
+    assert loaded["metadata"]["total_candidates"] == 2
+    assert loaded["metadata"]["total_included"] == 1
+    assert loaded["metadata"]["sources_used"] == ["arxiv"]
+    assert len(loaded["items"]) == 2
+
+
+def test_write_item_checkpoint_included_only(tmp_path):
+    from src.stage.checkpoint import write_item_checkpoint
+    items = [
+        _make_item("arxiv:001", "arxiv", 5, True),
+        _make_item("arxiv:002", "arxiv", 2, False),
+        _make_item("yt:abc", "youtube", 4, True),
+    ]
+    path = tmp_path / "test_item_checkpoint.json"
+
+    write_item_checkpoint(
+        path=str(path),
+        research_project="test",
+        query_terms=["test"],
+        research_criteria_version="0.1.0",
+        items=items,
+        sources_used=["arxiv", "youtube"],
+        included_only=True,
+    )
+
+    loaded = read_checkpoint(str(path))
+    assert len(loaded["items"]) == 2
+    assert all(item["included"] for item in loaded["items"])
+
+
+def test_write_item_checkpoint_validation_error(tmp_path):
+    from src.stage.checkpoint import write_item_checkpoint
+    path = tmp_path / "bad_checkpoint.json"
+    bad_items = [{"item_id": "arxiv:001"}]  # missing required fields
+
+    with pytest.raises(ValueError, match="Checkpoint validation failed"):
+        write_item_checkpoint(
+            path=str(path),
+            research_project="test",
+            query_terms=["test"],
+            research_criteria_version="0.1.0",
+            items=bad_items,
+            sources_used=["arxiv"],
+        )
