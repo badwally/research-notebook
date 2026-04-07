@@ -4,9 +4,16 @@
 # metadata for research corpus inclusion. It is domain-agnostic; pair it
 # with a domain config file to instantiate for a specific research topic.
 #
+# Assembly: At filter time, the pipeline merges this template with a domain
+# config file into a single document. That merged document is passed to
+# Claude as the complete system context, followed by video metadata as
+# user input. Claude sees the full populated YAML as one coherent prompt.
+#
 # Usage: At filter time, Claude receives this template (populated with
 # domain config values) plus a batch of video metadata objects. Claude
 # evaluates each video and returns a relevance score + rationale.
+
+version: "{version}"
 
 system_prompt: |
   You are a research corpus curator. Your job is to evaluate YouTube video
@@ -46,7 +53,7 @@ exclusion_criteria:
     - "{exclusion_criterion_3}"
 
 quality_signals:
-  # These are weighted indicators, not hard gates. A video can score well
+  # These are soft indicators, not hard gates. A video can score well
   # without all of them, but more signals = higher confidence.
   channel_authority:
     description: "Signals that the channel produces credible research content"
@@ -100,4 +107,4 @@ output_format:
   fields:
     relevance_score: "integer 1-5 per rubric above"
     inclusion_rationale: "1-2 sentences explaining the score"
-    included: "boolean — true if relevance_score >= {inclusion_threshold}"
+    included: "boolean — true if relevance_score >= inclusion_threshold (see scoring_rubric)"
