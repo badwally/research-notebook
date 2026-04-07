@@ -30,6 +30,9 @@ def write_checkpoint(
     Raises:
         ValueError: If the checkpoint data fails schema validation.
     """
+    total_candidates = len(videos)
+    total_included = sum(1 for v in videos if v.get("included"))
+
     if included_only:
         videos = [v for v in videos if v.get("included")]
 
@@ -39,8 +42,8 @@ def write_checkpoint(
             "query_terms": query_terms,
             "research_criteria_version": research_criteria_version,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "total_candidates": len(videos),
-            "total_included": sum(1 for v in videos if v.get("included")),
+            "total_candidates": total_candidates,
+            "total_included": total_included,
         },
         "videos": videos,
     }
@@ -81,6 +84,9 @@ def write_item_checkpoint(
     Raises:
         ValueError: If the checkpoint data fails schema validation.
     """
+    total_candidates = len(items)
+    total_included = sum(1 for item in items if item.get("included"))
+
     if included_only:
         items = [item for item in items if item.get("included")]
 
@@ -90,8 +96,8 @@ def write_item_checkpoint(
             "query_terms": query_terms,
             "research_criteria_version": research_criteria_version,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "total_candidates": len(items),
-            "total_included": sum(1 for item in items if item.get("included")),
+            "total_candidates": total_candidates,
+            "total_included": total_included,
             "sources_used": sources_used,
         },
         "items": items,
