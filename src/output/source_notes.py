@@ -104,7 +104,7 @@ def generate_paper_note(item: dict, branch_tag: str = None, cited_in_concepts: l
     tags = sorted(set(tags))
 
     # Authors as list of name strings for frontmatter
-    author_names = [a["name"] for a in item.get("authors", [])]
+    author_names = [a["name"] for a in (item.get("authors") or [])]
 
     frontmatter = {
         "type": "source-paper",
@@ -116,10 +116,12 @@ def generate_paper_note(item: dict, branch_tag: str = None, cited_in_concepts: l
         "publish_date": item["publish_date"],
         "content_type": item.get("content_type", "preprint"),
         "relevance_score": item.get("relevance_score", 0),
-        "citation_count": meta.get("citation_count"),
-        "doi": meta.get("doi"),
         "tags": tags,
     }
+    if meta.get("citation_count") is not None:
+        frontmatter["citation_count"] = meta["citation_count"]
+    if meta.get("doi"):
+        frontmatter["doi"] = meta["doi"]
 
     lines = ["---"]
     lines.append(yaml.dump(frontmatter, default_flow_style=False, sort_keys=False, allow_unicode=True).strip())
