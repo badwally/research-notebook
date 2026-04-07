@@ -3,6 +3,8 @@
 import os
 from datetime import datetime, timezone
 
+import yaml
+
 from src.search.queries import load_domain_queries
 from src.filter.policy import load_merged_policy
 from src.filter.semantic import build_filter_prompt, parse_filter_response, apply_scores
@@ -71,6 +73,14 @@ def build_filter_context(
     return build_filter_prompt(merged, videos)
 
 
+def _make_checkpoint_path(output_dir: str, research_project: str) -> str:
+    """Create a timestamped checkpoint file path."""
+    os.makedirs(output_dir, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    filename = f"{research_project}_{timestamp}.json"
+    return os.path.join(output_dir, filename)
+
+
 def stage_results(
     videos: list[dict],
     research_project: str,
@@ -92,10 +102,7 @@ def stage_results(
     Returns:
         Path to the written checkpoint file.
     """
-    os.makedirs(output_dir, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    filename = f"{research_project}_{timestamp}.json"
-    path = os.path.join(output_dir, filename)
+    path = _make_checkpoint_path(output_dir, research_project)
 
     return write_checkpoint(
         path=path,
@@ -134,7 +141,6 @@ def run_multi_source_search(
     if unsupported:
         raise ValueError(f"Unsupported source types: {unsupported}")
 
-    import yaml
     with open(domain_path) as f:
         domain = yaml.safe_load(f)
 
@@ -173,10 +179,7 @@ def stage_items(
     Returns:
         Path to the written checkpoint file.
     """
-    os.makedirs(output_dir, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    filename = f"{research_project}_{timestamp}.json"
-    path = os.path.join(output_dir, filename)
+    path = _make_checkpoint_path(output_dir, research_project)
 
     return write_item_checkpoint(
         path=path,
