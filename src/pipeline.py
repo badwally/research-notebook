@@ -7,7 +7,9 @@ from src.search.youtube import build_client, search_and_normalize
 from src.search.queries import load_domain_queries
 from src.filter.policy import load_merged_policy
 from src.filter.semantic import build_filter_prompt, parse_filter_response, apply_scores
-from src.stage.checkpoint import write_checkpoint
+from src.stage.checkpoint import write_checkpoint, write_item_checkpoint
+from src.search.arxiv import search_and_normalize as arxiv_search
+from src.search.normalize import deduplicate_items
 
 
 def run_search(
@@ -100,5 +102,87 @@ def stage_results(
         query_terms=query_terms,
         research_criteria_version=research_criteria_version,
         videos=videos,
+        included_only=included_only,
+    )
+
+
+def run_multi_source_search(
+    sources: list[str],
+    domain_path: str,
+    max_results_per_query: int = 50,
+) -> list[dict]:
+    """Stage 1a: Search academic sources and return unified items.
+
+    Searches sources that emit the ITEM_REQUIRED_FIELDS format.
+    YouTube is handled separately via run_search() (legacy format).
+
+    Args:
+        sources: List of source types to search, e.g. ["arxiv"].
+            Currently supports: "arxiv". ("pubmed" planned for Phase G.)
+        domain_path: Path to domain config YAML.
+        max_results_per_query: Max results per search query.
+
+    Returns:
+        List of normalized item dicts (ITEM_REQUIRED_FIELDS format).
+
+    Raises:
+        ValueError: If an unsupported source type is requested.
+    """
+    supported = {"arxiv"}
+    unsupported = set(sources) - supported
+    if unsupported:
+        raise ValueError(f"Unsupported source types: {unsupported}")
+
+    import yaml
+    with open(domain_path) as f:
+        domain = yaml.safe_load(f)
+
+    all_items = []
+
+    if "arxiv" in sources:
+        topic = domain["domain"]["topic"]
+        arxiv_config = domain.get("academic_sources", {}).get("arxiv", {})
+        categories = arxiv_config.get("categories")
+        results = arxiv_search(topic, max_results=max_results_per_query, categories=categories)
+        all_items.extend(results)
+
+    return deduplicate_items(all_items)
+
+
+def stage_items(
+    items: list[dict],
+    research_project: str,
+    query_terms: list[str],
+    research_criteria_version: str,
+    sources_used: list[str],
+    output_dir: str = "data/staged",
+    included_only: bool = True,
+) -> str:
+    """Stage 2: Write scored items to a checkpoint file (item format).
+
+    Args:
+        items: Scored item metadata (with relevance_score, etc.).
+        research_project: Project name for the checkpoint.
+        query_terms: Queries used in the search.
+        research_criteria_version: Version of the editorial policy.
+        sources_used: List of source types searched, e.g. ["arxiv"].
+        output_dir: Directory for checkpoint files.
+        included_only: Only write included items.
+
+    Returns:
+        Path to the written checkpoint file.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    filename = f"{research_project}_{timestamp}.json"
+    path = os.path.join(output_dir, filename)
+
+    return write_item_checkpoint(
+        path=path,
+        research_project=research_project,
+        query_terms=query_terms,
+        research_criteria_version=research_criteria_version,
+        items=items,
+        sources_used=sources_used,
         included_only=included_only,
     )
