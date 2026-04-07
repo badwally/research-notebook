@@ -28,7 +28,8 @@ Seven stages. See `files/project_prompt.json` for full spec.
 - Stage 1b: Semantic filter — COMPLETE
 - Stage 2: JSON staging — COMPLETE
 - Stage 3: NotebookLM ingestion — COMPLETE
-- Stages 4-7: Not implemented
+- Stage 4-5: Corpus research — COMPLETE
+- Stages 6-7: Not implemented
 
 ## Environment
 
