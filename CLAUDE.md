@@ -29,7 +29,7 @@ Seven stages. See `files/project_prompt.json` for full spec.
 - Stage 2: JSON staging — COMPLETE
 - Stage 3: NotebookLM ingestion — COMPLETE
 - Stage 4-5: Corpus research — COMPLETE
-- Stages 6-7: Not implemented
+- Stage 6-7: Obsidian vault — COMPLETE (141 notes: 86 sources, 46 concepts, 5 MOCs, 3 synthesis, 1 tags doc)
 
 ## Environment
 
