@@ -3,7 +3,6 @@
 import os
 from datetime import datetime, timezone
 
-from src.search.youtube import build_client, search_and_normalize
 from src.search.queries import load_domain_queries
 from src.filter.policy import load_merged_policy
 from src.filter.semantic import build_filter_prompt, parse_filter_response, apply_scores
@@ -29,6 +28,8 @@ def run_search(
     Returns:
         List of normalized video metadata dicts.
     """
+    from src.search.youtube import build_client, search_and_normalize
+
     with open(api_key_path) as f:
         api_key = f.read().strip()
 
