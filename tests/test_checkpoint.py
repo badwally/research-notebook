@@ -88,6 +88,71 @@ def test_write_and_read_checkpoint_roundtrip(tmp_path):
     assert loaded["videos"][0]["video_id"] == "vid1"
 
 
+def _make_item(item_id="arxiv:2401.12345", source_type="arxiv", score=4, included=True):
+    return {
+        "item_id": item_id,
+        "source_type": source_type,
+        "url": "https://arxiv.org/abs/2401.12345",
+        "title": "Test Paper",
+        "authors": [{"name": "Test Author", "affiliation": "Test University"}],
+        "publish_date": "2024-01-15T00:00:00Z",
+        "description": "A test paper abstract",
+        "content_type": "preprint",
+        "full_text_available": True,
+        "relevance_score": score,
+        "inclusion_rationale": "Relevant to topic",
+        "included": included,
+    }
+
+
+def test_validate_checkpoint_accepts_item_format():
+    checkpoint = {
+        "metadata": {
+            "research_project": "ai_temporal_video",
+            "query_terms": ["temporal video understanding"],
+            "research_criteria_version": "0.1.0",
+            "timestamp": "2026-04-07T12:00:00Z",
+            "total_candidates": 10,
+            "total_included": 3,
+        },
+        "items": [_make_item()],
+    }
+    errors = validate_checkpoint(checkpoint)
+    assert errors == []
+
+
+def test_validate_checkpoint_catches_missing_item_fields():
+    checkpoint = {
+        "metadata": {
+            "research_project": "test",
+            "query_terms": ["test"],
+            "research_criteria_version": "0.1.0",
+            "timestamp": "2026-04-07T12:00:00Z",
+            "total_candidates": 1,
+            "total_included": 1,
+        },
+        "items": [{"item_id": "arxiv:2401.12345"}],
+    }
+    errors = validate_checkpoint(checkpoint)
+    assert len(errors) > 0
+    assert any("source_type" in e for e in errors)
+
+
+def test_validate_checkpoint_rejects_missing_both_keys():
+    checkpoint = {
+        "metadata": {
+            "research_project": "test",
+            "query_terms": ["test"],
+            "research_criteria_version": "0.1.0",
+            "timestamp": "2026-04-07T12:00:00Z",
+            "total_candidates": 0,
+            "total_included": 0,
+        },
+    }
+    errors = validate_checkpoint(checkpoint)
+    assert any("videos" in e and "items" in e for e in errors)
+
+
 def test_write_checkpoint_only_includes_scored_videos(tmp_path):
     """Checkpoint only includes videos that were scored (included=True)."""
     videos = [
