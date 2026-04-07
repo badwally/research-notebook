@@ -68,7 +68,7 @@ def normalize_paper(entry: dict) -> dict:
         "item_id": make_item_id("arxiv", arxiv_id_clean),
         "source_type": "arxiv",
         "url": entry["id"],
-        "title": entry.get("title", "").replace("\n", " ").strip(),
+        "title": " ".join(entry.get("title", "").split()),
         "authors": authors,
         "publish_date": entry.get("published", ""),
         "description": truncate_description(entry.get("summary", "").replace("\n", " ").strip(), 1000),
@@ -134,5 +134,7 @@ def search_and_normalize(
     """
     arxiv_query = build_query(query, categories)
     entries = search_arxiv(arxiv_query, max_results=max_results, sort_by=sort_by)
+    if not entries:
+        return []
     time.sleep(RATE_LIMIT_SECONDS)  # respect arXiv rate limit
     return [normalize_paper(entry) for entry in entries]

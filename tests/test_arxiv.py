@@ -77,7 +77,7 @@ def test_normalize_paper_journal_article():
 def test_normalize_paper_cleans_title():
     entry = _make_entry(title="Multi-line\n  Title  Here")
     item = normalize_paper(entry)
-    assert item["title"] == "Multi-line   Title  Here"
+    assert item["title"] == "Multi-line Title Here"
 
 
 def test_normalize_paper_truncates_long_description():
