@@ -1,0 +1,24 @@
+# API keys and secrets
+config/*.key
+config/*.json
+!config/*.template.json
+
+# Environment
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Data (large, regenerable)
+data/staged/*.json
+data/research/*.json
+
+# Logs
+logs/*.json
+
+# IDE
+.idea/
+.vscode/

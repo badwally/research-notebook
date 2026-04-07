@@ -1,0 +1,245 @@
+{
+  "project": {
+    "name": "YouTube Research Pipeline",
+    "description": "Automated research pipeline using Claude Code as orchestration layer. Searches YouTube for videos matching semantic research criteria, filters results via Claude as intermediate semantic layer, ingests into NotebookLM for corpus-based research, and produces Obsidian-compatible markdown knowledge base with semantic tags."
+  },
+  "architecture": {
+    "stages": [
+      {
+        "stage": 1,
+        "name": "YouTube Search & Filter",
+        "description": "Two-phase process. First, YouTube Data API v3 performs keyword-based search and retrieves candidate video metadata. Second, Claude evaluates each candidate's metadata against user-defined research criteria and produces a relevance score and inclusion/exclusion rationale.",
+        "rationale": "YouTube search ranks by engagement metrics, not research relevance. NotebookLM cannot select its own inputs. Claude bridges the gap as a semantic filter that reads unstructured metadata and evaluates it against natural-language research criteria. This pre-filtering protects NotebookLM's downstream retrieval quality.",
+        "inputs": {
+          "user_query": "Natural language description of research topic and criteria",
+          "api_key": "YouTube Data API v3 key",
+          "search_parameters": {
+            "keywords": "Derived from user query",
+            "max_results_per_query": "50 (API maximum per page)",
+            "filters": ["publishedAfter", "videoDuration", "relevanceLanguage", "type=video"]
+          }
+        },
+        "outputs": {
+          "format": "JSON array of video metadata objects",
+          "fields_per_video": [
+            "video_id",
+            "url",
+            "title",
+            "channel_name",
+            "channel_id",
+            "publish_date",
+            "duration",
+            "view_count",
+            "description",
+            "has_captions",
+            "relevance_score",
+            "inclusion_rationale",
+            "included"
+          ]
+        },
+        "dependencies": {
+          "youtube_data_api_v3": {
+            "credential": "API key from Google Cloud project",
+            "quota": "10,000 units/day. Search=100 units, video details=1 unit, captions list=50 units.",
+            "library": "google-api-python-client"
+          },
+          "claude_code_max": {
+            "role": "Semantic filtering of metadata against research criteria. Runs as Claude Code's own reasoning within the Max plan allocation.",
+            "auth": "Max subscription login. No separate Anthropic API key required. If ANTHROPIC_API_KEY env var is set, Claude Code will use API billing instead — unset it to stay on Max plan.",
+            "input": "Batch of video metadata objects + research criteria prompt",
+            "output": "Same objects with relevance_score, inclusion_rationale, included boolean",
+            "cost": "Consumes Max plan usage allocation (shared across claude.ai, Claude Desktop, and Claude Code). No per-token billing."
+          }
+        },
+        "subtasks": {
+          "1A": {
+            "name": "Corpus Editorial Policy Prompt",
+            "status": "not_started",
+            "description": "Design reusable prompt template for Claude's semantic filtering step. This is the editorial policy of the research corpus and the highest-leverage design decision in the pipeline.",
+            "deliverable": "Prompt template with slots for: inclusion criteria, exclusion criteria, quality signals (channel authority, speaker expertise, content depth), scoring rubric (1-5 scale with inclusion threshold), domain-specific configuration (topic, field, key terms, known authoritative channels).",
+            "constraint": "Must be completed before first pipeline run against real data."
+          }
+        },
+        "quota_planning": {
+          "scenario": "100 candidate videos",
+          "cost_estimate": "~5,200 API units (1 search page=100 + 100 video details=100 + 100 caption checks=5,000)",
+          "sessions_per_day": "~2 substantive sessions at 100 videos each"
+        }
+      },
+      {
+        "stage": 2,
+        "name": "URL Extraction & Staging",
+        "description": "Write filtered results from Stage 1 to a structured JSON checkpoint file on disk. This file is the input contract for Stage 3 and serves as audit trail and pipeline checkpoint.",
+        "rationale": "Decouples search/filter from ingestion. Provides inspection point for reviewing what the pipeline selected and why. If Stage 3 fails, Stage 1 does not need to be re-run.",
+        "inputs": {
+          "source": "Stage 1 output (filtered video metadata array)"
+        },
+        "outputs": {
+          "format": "JSON file on disk",
+          "location": "data/staged/{research_project}_{timestamp}.json",
+          "schema": {
+            "metadata": {
+              "research_project": "string",
+              "query_terms": ["string"],
+              "research_criteria_version": "string (hash or version of Subtask 1A prompt used)",
+              "timestamp": "ISO 8601",
+              "total_candidates": "integer",
+              "total_included": "integer"
+            },
+            "videos": [
+              {
+                "video_id": "string",
+                "url": "string (https://youtube.com/watch?v={video_id})",
+                "title": "string",
+                "channel_name": "string",
+                "channel_id": "string",
+                "publish_date": "ISO 8601",
+                "duration": "ISO 8601 duration",
+                "view_count": "integer",
+                "description": "string (first 500 chars)",
+                "has_captions": "boolean",
+                "relevance_score": "integer (1-5)",
+                "inclusion_rationale": "string (1-2 sentences)"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "stage": 3,
+        "name": "NotebookLM Ingestion",
+        "description": "Claude Code connects to NotebookLM via notebooklm-mcp-cli MCP server, creates a notebook for the research project, and batch-ingests YouTube URLs from the Stage 2 JSON file. Failures are logged with video ID and error details.",
+        "rationale": "MCP path chosen over Python CLI for tighter agentic feedback loop. Claude can react to ingestion failures in real time. Decision logged for re-evaluation if MCP proves fragile.",
+        "inputs": {
+          "source": "Stage 2 JSON checkpoint file",
+          "mcp_server": "notebooklm-mcp-cli"
+        },
+        "outputs": {
+          "notebook": "NotebookLM notebook with ingested video sources",
+          "ingestion_log": {
+            "format": "JSON file on disk",
+            "location": "logs/ingestion_{research_project}_{timestamp}.json",
+            "fields": ["video_id", "url", "status", "error_message", "timestamp"]
+          }
+        },
+        "dependencies": {
+          "notebooklm_mcp_cli": {
+            "install": "pip install notebooklm-mcp-cli OR uv tool install notebooklm-mcp-cli",
+            "auth": "OAuth browser login via 'nlm login'",
+            "caveat": "Uses undocumented Google APIs. Can break without notice."
+          },
+          "notebooklm_pro": {
+            "tier": "Pro ($19.99/month via Google AI Pro)",
+            "limits": "300 sources/notebook, 500 notebooks, 500 daily queries"
+          }
+        },
+        "fallback": {
+          "tool": "notebooklm-py",
+          "description": "Python CLI providing same capabilities. Produces standalone scripts runnable without Claude Code. Use if MCP path breaks.",
+          "install": "pip install notebooklm-py"
+        },
+        "error_handling": {
+          "per_video_failure": "Log error, skip video, continue batch. Surface failures in ingestion log for manual review.",
+          "auth_failure": "Halt ingestion. Prompt user to re-authenticate via 'nlm login'.",
+          "rate_limit": "Implement exponential backoff. Log rate limit events."
+        }
+      },
+      {
+        "stage": 4,
+        "name": "Corpus Query Layer",
+        "status": "designed_not_specified",
+        "description": "NotebookLM provides persistent semantic index over ingested videos. Cross-source synthesis and grounded citations via conversational queries through MCP.",
+        "notes": "NotebookLM's retrieval logic is opaque. No control over chunk size, embedding model, or similarity threshold. Acceptable for exploratory research; may limit systematic coverage verification."
+      },
+      {
+        "stage": 5,
+        "name": "Deep Research",
+        "status": "designed_not_specified",
+        "description": "Structured investigation of specific topics against the corpus. Extract claims, arguments, and evidence with source attribution."
+      },
+      {
+        "stage": 6,
+        "name": "Knowledge Base Output",
+        "status": "designed_not_specified",
+        "description": "Synthesize research outputs into Obsidian-compatible .md files with standardized YAML frontmatter."
+      },
+      {
+        "stage": 7,
+        "name": "Semantic Tagging",
+        "status": "designed_not_specified",
+        "description": "Controlled vocabulary derived from semantic analysis of video content. Applied consistently across Obsidian vault via frontmatter tags."
+      }
+    ],
+    "design_decisions": [
+      {
+        "decision": "Claude as semantic filter between YouTube API and NotebookLM",
+        "rationale": "YouTube search cannot evaluate research relevance. NotebookLM cannot select its own inputs. Claude reads unstructured metadata and applies natural-language research criteria. Pre-filtering protects NotebookLM retrieval quality.",
+        "reversible": true
+      },
+      {
+        "decision": "NotebookLM in critical path for research (Stages 3-5)",
+        "rationale": "Provides managed RAG with persistent semantic index, cross-source synthesis, and grounded citation. Pro tier (300 sources/notebook) handles target corpus of ~200 videos. Building equivalent capabilities from scratch requires significant engineering investment in embeddings, vector store, and retrieval infrastructure.",
+        "reversible": true,
+        "reassess_if": "NotebookLM API access becomes unreliable, source limits prove insufficient, or retrieval quality degrades at scale."
+      },
+      {
+        "decision": "MCP path for NotebookLM automation (over Python CLI)",
+        "rationale": "Tighter agentic feedback loop. Claude reacts to failures in real time. More natural for conversational research sessions.",
+        "reversible": true,
+        "fallback": "notebooklm-py CLI scripts. Produces standalone, inspectable, version-controllable artifacts.",
+        "reassess_if": "MCP server breaks due to undocumented API changes, auth token management becomes burdensome, or pipeline needs to run independently of Claude Code."
+      },
+      {
+        "decision": "Corpus editorial policy as discrete subtask (1A)",
+        "rationale": "Filtering prompt is the highest-leverage design decision. Errors silently degrade all downstream stages. Requires its own iteration cycle separate from pipeline engineering.",
+        "reversible": true
+      }
+    ]
+  },
+  "implementation_plan": {
+    "current_status": "Stages 1-3 architecturally designed. No implementation begun.",
+    "sequence": [
+      "Set up Google Cloud project, enable YouTube Data API v3, generate API key",
+      "Install notebooklm-mcp-cli, authenticate, verify Pro tier access",
+      "Implement Stage 1: YouTube search wrapper (API client, pagination, metadata normalization)",
+      "Design Subtask 1A: Corpus editorial policy prompt template",
+      "Implement Stage 1: Semantic filtering (Claude evaluates metadata against criteria)",
+      "Implement Stage 2: JSON staging (write checkpoint file with schema validation)",
+      "Test Stages 1-2 end-to-end with real YouTube search on a test topic",
+      "Implement Stage 3: NotebookLM ingestion via MCP (create notebook, batch-add URLs, log results)",
+      "Test Stage 3 with Stage 2 output",
+      "Validate full Stage 1-3 pipeline on a real research topic",
+      "Design and implement Stages 4-7 (not yet specified)"
+    ],
+    "constraint": "Subtask 1A (editorial policy prompt) must be completed before running pipeline against real data. It can be designed in parallel with Stage 1 API implementation."
+  },
+  "project_constraints": {
+    "engineering_philosophy": [
+      "Incremental, reversible steps. No monolithic builds.",
+      "Surface architectural decisions before implementing.",
+      "Smallest safe step. One-sentence check before multi-step plans.",
+      "Pragmatic over clever. Simple, readable, maintainable code.",
+      "YAGNI governs feature scope.",
+      "Debug root causes, not symptoms. No workarounds.",
+      "Match the style of surrounding code. Local consistency trumps external standards."
+    ],
+    "naming": "Domain story, not implementation story. Registry not ToolRegistryManager. No temporal markers.",
+    "testing": "Test logic that could regress. Test-first when expected behavior is clear. Tests cover real logic, not mocked behavior."
+  },
+  "file_structure": {
+    "root": "youtube-research-pipeline/",
+    "directories": {
+      "config/": "API keys (gitignored), research criteria prompt templates",
+      "src/search/": "Stage 1: YouTube API search wrapper",
+      "src/filter/": "Stage 1: Semantic filtering logic",
+      "src/stage/": "Stage 2: JSON staging and schema validation",
+      "src/ingest/": "Stage 3: NotebookLM ingestion via MCP",
+      "src/research/": "Stage 5: Research synthesis",
+      "src/output/": "Stages 6-7: Obsidian output and tagging",
+      "data/staged/": "Stage 2 JSON checkpoint files",
+      "data/research/": "Stage 5 intermediate outputs",
+      "data/obsidian/": "Stages 6-7 final .md files",
+      "logs/": "Ingestion logs, error reports"
+    }
+  }
+}
