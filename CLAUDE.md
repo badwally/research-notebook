@@ -23,9 +23,9 @@ Seven stages. See `files/project_prompt.json` for full spec.
 
 ## Status
 
+- Stage 0: Editorial policy — COMPLETE
 - Stages 1-3: Architecturally designed, not implemented
 - Stages 4-7: Overview level only
-- Subtask 1A: Not started
 - No code written
 
 ## Environment

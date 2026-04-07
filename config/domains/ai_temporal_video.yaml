@@ -25,7 +25,7 @@ exclusion_criteria:
   hard_exclude:
     - "Pure product demos or marketing with no technical content"
     - "Tutorials on basic video editing or video production tools"
-    - "News segments that mention AI + video without technical depth (under 2 minutes of substance)"
+    - "Short news segments or hype pieces that mention AI + video without technical depth"
     - "Content focused exclusively on real-time/streaming inference with no longitudinal component"
     - "Duplicate or re-uploaded content from another channel already in the corpus"
 
