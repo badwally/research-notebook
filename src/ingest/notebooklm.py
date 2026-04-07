@@ -65,15 +65,16 @@ def create_notebook(project_name: str) -> str:
     except (json.JSONDecodeError, KeyError):
         pass  # No existing notebooks or unexpected format, create new
 
-    # Create new notebook
-    result = _run_nlm(["notebook", "create", project_name, "--json"])
-    try:
-        notebook = json.loads(result.stdout)
-        notebook_id = notebook["id"]
-        print(f"Created notebook: {project_name} ({notebook_id})")
-        return notebook_id
-    except (json.JSONDecodeError, KeyError) as e:
-        raise RuntimeError(f"Failed to parse notebook creation response: {e}\n{result.stdout}")
+    # Create new notebook (no --json flag available, parse text output)
+    result = _run_nlm(["notebook", "create", project_name])
+    # Output format: "✓ Created notebook: Name\n  ID: <uuid>"
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if line.startswith("ID:"):
+            notebook_id = line.split(":", 1)[1].strip()
+            print(f"Created notebook: {project_name} ({notebook_id})")
+            return notebook_id
+    raise RuntimeError(f"Failed to parse notebook ID from output:\n{result.stdout}")
 
 
 def add_youtube_source(
