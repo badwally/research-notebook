@@ -82,6 +82,8 @@ def validate_checkpoint(checkpoint: dict) -> list[str]:
                 for field, expected_type in VIDEO_REQUIRED_FIELDS.items():
                     if field not in video:
                         errors.append(f"videos[{i}]: missing field '{field}'")
+                    elif not isinstance(video[field], expected_type):
+                        errors.append(f"videos[{i}].{field}: expected {expected_type.__name__}, got {type(video[field]).__name__}")
     else:
         errors.append("Missing 'videos' or 'items' key")
 
