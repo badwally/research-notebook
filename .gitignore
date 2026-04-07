@@ -1,6 +1,7 @@
 # API keys and secrets
 config/*.key
 config/*.json
+config/*.txt
 !config/*.template.json
 
 # Environment
