@@ -8,13 +8,13 @@ _SOURCE_PREFIXES = {
 }
 
 
-def make_item_id(source_type, raw_id):
+def make_item_id(source_type: str, raw_id: str) -> str:
     if source_type not in _SOURCE_PREFIXES:
         raise ValueError(f"Unknown source type: {source_type!r}")
     return f"{_SOURCE_PREFIXES[source_type]}:{raw_id}"
 
 
-def truncate_description(text, max_length=500):
+def truncate_description(text: str, max_length: int = 500) -> str:
     if text is None:
         return ""
     if len(text) <= max_length:
@@ -22,7 +22,7 @@ def truncate_description(text, max_length=500):
     return text[: max_length - 3] + "..."
 
 
-def deduplicate_items(items):
+def deduplicate_items(items: list[dict]) -> list[dict]:
     seen = set()
     result = []
     for item in items:
@@ -35,5 +35,5 @@ def deduplicate_items(items):
     return result
 
 
-def empty_scores():
+def empty_scores() -> dict:
     return {"relevance_score": 0, "inclusion_rationale": "", "included": False}
