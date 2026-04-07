@@ -88,15 +88,17 @@ tags:
 
 ## Tag Taxonomy
 
-Tags are derived from the corpus content. Four categories:
+Tags are derived from the corpus content at generation time — not hardcoded. Different research domains will produce different tag values. The tag *categories* are the reusable structure; the values within each category are extracted from the taxonomy and research findings.
 
-**Branch tags:** `action-recognition`, `temporal-action-detection`, `video-tracking`, `video-language`, `spatio-temporal-computing`
+Four categories, with example values from the current corpus:
 
-**Architecture tags:** `transformer`, `graph-neural-network`, `cnn-3d`, `rnn-lstm`, `spiking-nn`
+**Branch tags** (derived from taxonomy branch names): e.g., `action-recognition`, `temporal-action-detection`, `video-tracking`, `video-language`, `spatio-temporal-computing`
 
-**Task tags:** `classification`, `detection`, `localization`, `segmentation`, `grounding`, `captioning`, `tracking`
+**Architecture tags** (extracted from methods/architectures in findings): e.g., `transformer`, `graph-neural-network`, `cnn-3d`, `rnn-lstm`, `spiking-nn`
 
-**Learning paradigm tags:** `supervised`, `self-supervised`, `few-shot`, `unsupervised`
+**Task tags** (extracted from sub-branch descriptions and method contexts): e.g., `classification`, `detection`, `localization`, `segmentation`, `grounding`, `captioning`, `tracking`
+
+**Learning paradigm tags** (extracted from sub-branch names and method descriptions): e.g., `supervised`, `self-supervised`, `few-shot`, `unsupervised`
 
 **Rules:**
 - Lowercase, hyphenated
