@@ -91,3 +91,88 @@ def apply_scores(videos: list[dict], scores: list[dict]) -> list[dict]:
             result.append(scored)
 
     return result
+
+
+def _source_guidance(source_type: str) -> str:
+    """Return evaluation guidance for a source type."""
+    guidance = {
+        "youtube": "Evaluate channel authority, speaker expertise, and content depth. Prefer substantive technical content over news or hype.",
+        "arxiv": "Evaluate methodology rigor, novelty, and relevance to research criteria. Note whether the paper has been peer-reviewed (check journal_ref in source_metadata). Preprints without peer review should still be included if methodology is sound.",
+        "pubmed": "Evaluate peer review status, journal quality, and methodology. Prioritize systematic reviews and meta-analyses. Check publication_type in source_metadata.",
+        "semantic_scholar": "Evaluate citation impact and field relevance. High citation count with recent influential citations indicates established work.",
+    }
+    return guidance.get(source_type, "Evaluate based on general quality signals in the editorial policy.")
+
+
+def build_item_filter_prompt(merged_policy: dict, items: list[dict]) -> str:
+    """Build filter prompt for multi-source items.
+
+    Groups items by source_type and includes source-specific evaluation
+    guidance so Claude applies appropriate quality signals.
+
+    Args:
+        merged_policy: Merged editorial policy (template + domain config).
+        items: List of normalized item dicts (ITEM_REQUIRED_FIELDS format).
+
+    Returns:
+        Formatted prompt string ready for Claude evaluation.
+    """
+    policy_yaml = yaml.dump(merged_policy, default_flow_style=False, sort_keys=False)
+
+    # Build source-type preamble
+    source_types = sorted(set(item["source_type"] for item in items))
+    preamble_parts = []
+    for st in source_types:
+        count = sum(1 for item in items if item["source_type"] == st)
+        guidance = _source_guidance(st)
+        preamble_parts.append(f"- **{st}** ({count} items): {guidance}")
+    preamble = "\n".join(preamble_parts)
+
+    items_json = json.dumps(items, indent=2)
+
+    return f"""## Editorial Policy
+
+{policy_yaml}
+
+## Source Types in This Batch
+
+{preamble}
+
+## Items to Evaluate
+
+{items_json}
+
+## Instructions
+
+Evaluate each item against the editorial policy above, applying source-appropriate quality signals. For each item, return a JSON array where each element has:
+- "item_id": the item's ID
+- "relevance_score": integer 1-5 per the scoring rubric
+- "inclusion_rationale": 1-2 sentences explaining your score
+- "included": boolean (true if relevance_score >= {merged_policy['scoring_rubric']['inclusion_threshold']})
+
+Return ONLY the JSON array, no other text."""
+
+
+def apply_item_scores(items: list[dict], scores: list[dict]) -> list[dict]:
+    """Merge Claude's scores back into item metadata.
+
+    Args:
+        items: Original normalized item metadata.
+        scores: Claude's scoring output (from parse_filter_response).
+
+    Returns:
+        Items with relevance_score, inclusion_rationale, and included fields updated.
+    """
+    score_map = {s["item_id"]: s for s in scores}
+
+    result = []
+    for item in items:
+        iid = item["item_id"]
+        if iid in score_map:
+            scored = dict(item)
+            scored["relevance_score"] = score_map[iid]["relevance_score"]
+            scored["inclusion_rationale"] = score_map[iid]["inclusion_rationale"]
+            scored["included"] = score_map[iid]["included"]
+            result.append(scored)
+
+    return result
