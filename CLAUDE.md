@@ -24,13 +24,16 @@ Seven stages. See `files/project_prompt.json` for full spec.
 ## Status
 
 - Stage 0: Editorial policy — COMPLETE
-- Stages 1-3: Architecturally designed, not implemented
-- Stages 4-7: Overview level only
-- No code written
+- Stage 1a: YouTube search wrapper — COMPLETE
+- Stage 1b: Semantic filter — COMPLETE
+- Stage 2: JSON staging — COMPLETE
+- Stages 3-7: Not implemented
 
 ## Environment
 
-- Python project (check venv details below once created)
+- Python 3.11+ in .venv (source .venv/bin/activate)
+- Dependencies: google-api-python-client, PyYAML, pytest
+- Tests: python -m pytest tests/ -v
 - YouTube Data API v3 key required (gitignored in `config/`)
 - NotebookLM Pro tier, auth via `nlm login`
 - Claude Code on Max plan (no ANTHROPIC_API_KEY)
