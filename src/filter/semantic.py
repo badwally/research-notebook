@@ -161,7 +161,7 @@ def apply_item_scores(items: list[dict], scores: list[dict]) -> list[dict]:
         scores: Claude's scoring output (from parse_filter_response).
 
     Returns:
-        Items with relevance_score, inclusion_rationale, and included fields updated.
+        Scored items only. Items without a matching score in the response are dropped.
     """
     score_map = {s["item_id"]: s for s in scores}
 
