@@ -27,7 +27,8 @@ Seven stages. See `files/project_prompt.json` for full spec.
 - Stage 1a: YouTube search wrapper — COMPLETE
 - Stage 1b: Semantic filter — COMPLETE
 - Stage 2: JSON staging — COMPLETE
-- Stages 3-7: Not implemented
+- Stage 3: NotebookLM ingestion — COMPLETE
+- Stages 4-7: Not implemented
 
 ## Environment
 
