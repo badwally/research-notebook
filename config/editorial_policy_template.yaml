@@ -39,48 +39,33 @@ domain:
   description: "{domain_description}"
 
 inclusion_criteria:
-  # Videos MUST meet ALL of these to be considered for inclusion
-  required:
-    - "{inclusion_criterion_1}"
-    - "{inclusion_criterion_2}"
-    - "{inclusion_criterion_3}"
+  # Videos MUST meet ALL of these to be considered for inclusion.
+  # Domain config provides the actual criteria list (variable length).
+  required: []
 
 exclusion_criteria:
-  # Videos matching ANY of these are excluded regardless of other criteria
-  hard_exclude:
-    - "{exclusion_criterion_1}"
-    - "{exclusion_criterion_2}"
-    - "{exclusion_criterion_3}"
+  # Videos matching ANY of these are excluded regardless of other criteria.
+  # Domain config provides the actual exclusion list (variable length).
+  hard_exclude: []
 
 quality_signals:
   # These are soft indicators, not hard gates. A video can score well
   # without all of them, but more signals = higher confidence.
+  # Domain config provides the actual signal lists (variable length per category).
   channel_authority:
     description: "Signals that the channel produces credible research content"
-    positive_signals:
-      - "{authority_signal_1}"
-      - "{authority_signal_2}"
-    negative_signals:
-      - "{authority_negative_1}"
-      - "{authority_negative_2}"
+    positive_signals: []
+    negative_signals: []
 
   speaker_expertise:
     description: "Signals that the presenter has domain knowledge"
-    positive_signals:
-      - "{expertise_signal_1}"
-      - "{expertise_signal_2}"
-    negative_signals:
-      - "{expertise_negative_1}"
-      - "{expertise_negative_2}"
+    positive_signals: []
+    negative_signals: []
 
   content_depth:
     description: "Signals that the content goes beyond surface-level treatment"
-    positive_signals:
-      - "{depth_signal_1}"
-      - "{depth_signal_2}"
-    negative_signals:
-      - "{depth_negative_1}"
-      - "{depth_negative_2}"
+    positive_signals: []
+    negative_signals: []
 
 scoring_rubric:
   scale: "1-5"
