@@ -1,0 +1,177 @@
+field: AI for Longitudinal Temporal Video Analysis
+branches:
+- name: Neurobiology of Appetite and Reward
+  description: This area focuses on how GLP-1 receptor agonists interact with the
+    brain's homeostatic and reward centers to regulate food intake, satiety, and cravings
+    [1, 2].
+  sub_branches:
+  - name: Mesolimbic Dopamine System Modulation
+    description: Research examining how GLP-1 signaling dampens dopamine release in
+      the ventral tegmental area and nucleus accumbens, thereby reducing anticipatory
+      reward and food noise [1-3].
+    methods:
+    - Fast-scan cyclic voltammetry, used to measure minute-to-minute changes and spikes
+      in real-time dopamine signaling [4].
+    - '"GLP-1 neurons in the nucleus of the solitary tract project directly to the
+      ventral tegmental area and nucleus accumbens to control for food intake" (Alhadeff
+      et al., 2012) [1, 5].'
+    - Functional MRI (fMRI) imaging to evaluate less excited brain responses in reward
+      centers (amygdala, insula, orbitofrontal cortex) when viewing pictures of highly
+      palatable food [2, 6, 7].
+  - name: Hypothalamic and Hindbrain Homeostatic Signaling
+    description: Studies on how GLP-1 alters gene expression in the arcuate nucleus
+      and slows gastric emptying via vagus nerve communication with the brainstem
+      [8-10].
+    methods:
+    - '"Long term exendin-4 treatment reduces food intake and body weight and alters
+      expression of brain homeostatic and reward markers" (Yang et al., 2014), evaluating
+      POMC and NPY gene expression [8, 11].'
+- name: Addiction and Substance Use Disorders
+  description: This area explores the efficacy of GLP-1 receptor agonists in attenuating
+    the reinforcing properties of drugs, alcohol, and behavioral addictions by dialing
+    down the brain's reward system [12, 13].
+  sub_branches:
+  - name: Preclinical Animal Models of Addiction
+    description: Rodent studies demonstrating that GLP-1 analogs block the rewarding
+      effects, consumption, and locomotor sensitization of various addictive substances
+      [14, 15].
+    methods:
+    - '"The glucagon-like peptide 1 analogue Exendin-4 attenuates the nicotine-induced
+      locomotor stimulation... in mice" (Egecioglu et al., 2013) [14, 16].'
+    - '"The glucagon-like peptide 1 analogue, exendin-4, attenuates the rewarding
+      properties of psychostimulant drugs in mice" (Egecioglu et al., 2013) [15, 17].'
+    - '"Role of appetite-regulating peptides in the pathophysiology of addiction:
+      implications for pharmacotherapy" (Engel & Jerlhag, 2014) [13, 18].'
+  - name: Human Clinical Trials and Observational Studies on Addiction
+    description: Large-scale cohort analyses and clinical trials assessing the reduction
+      of alcohol, opioid, and nicotine consumption in humans taking GLP-1 medications
+      [19, 20].
+    methods:
+    - A 2026 observational study of 600,000 US veterans showing that GLP-1 use significantly
+      reduced the risk of substance use disorders and overdose deaths across all major
+      addictive substances [20, 21].
+    - Penn State clinical trials using Liraglutide, which demonstrated a 40% reduction
+      in opioid cravings [19].
+- name: Systemic Health and Neuroprotection
+  description: Investigations into the broader metabolic, cardiovascular, and neuroprotective
+    benefits of GLP-1 medications beyond basic weight loss [22, 23].
+  sub_branches:
+  - name: Cardiovascular Outcomes
+    description: Studies evaluating the reduction of major adverse cardiovascular
+      events independent of the total body weight lost by the patient [24].
+    methods:
+    - The SELECT Trial (Semaglutide Effects on Cardiovascular Outcomes), which tracked
+      over 17,000 people and showed a 20% reduction in heart attacks and strokes [24].
+  - name: Neurodegenerative Disease Prevention
+    description: Research into how GLP-1 drugs reduce neuroinflammation, amyloid-beta
+      plaques, and brain volume loss in cognitive disorders [25].
+    methods:
+    - Brain organoid studies demonstrating semaglutide's reduction of Alzheimer's
+      disease hallmarks, including amyloid-beta plaques, phosphorylated tau, and GFAP
+      [25, 26].
+    - Liraglutide clinical trials showing nearly 50% less brain volume loss and an
+      18% slower decline in cognitive function in Alzheimer's patients [25].
+- name: Mental Health and Emotional Regulation
+  description: Evaluation of the psychological side effects of GLP-1 therapies, including
+    emotional blunting, anhedonia, and the surveillance of depression or suicidality
+    risks [27, 28].
+  sub_branches:
+  - name: Suicidality and Depression Surveillance
+    description: Regulatory and clinical evaluations assessing whether GLP-1 agonists
+      cause or exacerbate depressive symptoms or suicidal ideations [28, 29].
+    methods:
+    - A 2025 BMJ cohort study and post-hoc analyses from semaglutide trials finding
+      no increased risk of suicidality or depression compared to placebos [29].
+    - FDA and European Medicines Agency (EMA) preliminary safety committee assessments
+      monitoring for suicidal thoughts [28, 29].
+  - name: Reward Deficit and Anhedonia
+    description: Clinical observation of "flat affect" and lack of motivation stemming
+      from the global dampening of dopamine and neural reward variability [27, 30].
+    methods:
+    - The clinical application of bupropion (a dopamine and norepinephrine reuptake
+      inhibitor) to counteract GLP-1-induced anhedonia and restore patient motivation
+      [31].
+- name: Clinical Dosing and Lifestyle Protocols
+  description: The development of clinical strategies to optimize GLP-1 efficacy,
+    minimize side effects, and preserve lean muscle mass during metabolic treatment
+    [32, 33].
+  sub_branches:
+  - name: Microdosing and Dose Titration Strategies
+    description: The practice of using sub-therapeutic doses to maintain GLP-1 receptor
+      sensitivity, prevent receptor down-regulation, and minimize gastrointestinal
+      side effects [34, 35].
+    methods:
+    - Application of GLP-1 plotters to calculate steady-state pharmacokinetics, drug
+      half-lives, and maximum circulating concentrations [36, 37].
+  - name: Body Composition and Metabolic Support
+    description: Protocols combining medication with specific nutritional targets
+      to prevent the 25-40% loss of lean muscle mass often seen with rapid GLP-1 weight
+      loss [33, 38].
+    methods:
+    - High-protein intake protocols (prescribing 1 gram of protein per pound of target
+      body weight) combined with resistance training [39, 40].
+    - The Diabetes Remission Clinical Trial (DiRECT) examining the efficacy of low-fat,
+      Mediterranean, and low-carb diets for metabolic health [41].
+citations:
+  '1': 842a6ade-7cb3-46cd-95e3-3ce17072227d
+  '2': 54e3f15e-e88d-468c-be8d-be9f66057723
+  '3': ec71f647-be8f-441b-bb9d-27b7bd89335e
+  '4': 6bacee35-8c38-4039-a7ce-89351aa8d14b
+  '5': 842a6ade-7cb3-46cd-95e3-3ce17072227d
+  '6': 06c113d8-4a78-49f6-bf7f-57c925accea9
+  '7': ad2efcbd-d861-4a3a-acbf-8fa25d39e9ab
+  '8': 8a1498ae-5a03-4b69-b2b1-5e6a0d28a4dd
+  '9': 54e3f15e-e88d-468c-be8d-be9f66057723
+  '10': ec71f647-be8f-441b-bb9d-27b7bd89335e
+  '11': 8a1498ae-5a03-4b69-b2b1-5e6a0d28a4dd
+  '12': 4637fbe5-8e15-4d70-bc2a-112fe49bc688
+  '13': 2a03cff7-0256-4ac6-9576-912b0b1a090a
+  '14': 56b7f6bb-d351-4312-8bef-f8dd5c642fbc
+  '15': 2b8cb8f0-3c1d-4306-8fca-9ab6cd17fc32
+  '16': 56b7f6bb-d351-4312-8bef-f8dd5c642fbc
+  '17': 2b8cb8f0-3c1d-4306-8fca-9ab6cd17fc32
+  '18': 2a03cff7-0256-4ac6-9576-912b0b1a090a
+  '19': f6df3fc0-f2c9-4182-b725-1c007c03f0fd
+  '20': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '21': 5f8869c1-36f4-4a7c-8fcf-68883d9ef656
+  '22': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '23': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '24': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '25': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '26': 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+  '27': fcc89d57-f517-42d9-9116-71a3975f2034
+  '28': 14d6ca8f-1e7d-43ea-a362-6eacd54686ce
+  '29': 14d6ca8f-1e7d-43ea-a362-6eacd54686ce
+  '30': ec71f647-be8f-441b-bb9d-27b7bd89335e
+  '31': fcc89d57-f517-42d9-9116-71a3975f2034
+  '32': f4538389-c07e-4636-ad0a-2995561c42c6
+  '33': 06c113d8-4a78-49f6-bf7f-57c925accea9
+  '34': 94bd849d-cd97-4b50-ad9c-80b233532cb3
+  '35': 94bd849d-cd97-4b50-ad9c-80b233532cb3
+  '36': f4538389-c07e-4636-ad0a-2995561c42c6
+  '37': f4538389-c07e-4636-ad0a-2995561c42c6
+  '38': 06c113d8-4a78-49f6-bf7f-57c925accea9
+  '39': df055add-372a-487e-a267-83f62b8e76a7
+  '40': 06c113d8-4a78-49f6-bf7f-57c925accea9
+  '41': 1f3fde93-f23a-42fb-993d-9df14b706863
+sources_used:
+- 842a6ade-7cb3-46cd-95e3-3ce17072227d
+- 54e3f15e-e88d-468c-be8d-be9f66057723
+- ec71f647-be8f-441b-bb9d-27b7bd89335e
+- 6bacee35-8c38-4039-a7ce-89351aa8d14b
+- 06c113d8-4a78-49f6-bf7f-57c925accea9
+- ad2efcbd-d861-4a3a-acbf-8fa25d39e9ab
+- 8a1498ae-5a03-4b69-b2b1-5e6a0d28a4dd
+- 4637fbe5-8e15-4d70-bc2a-112fe49bc688
+- 2a03cff7-0256-4ac6-9576-912b0b1a090a
+- 56b7f6bb-d351-4312-8bef-f8dd5c642fbc
+- 2b8cb8f0-3c1d-4306-8fca-9ab6cd17fc32
+- f6df3fc0-f2c9-4182-b725-1c007c03f0fd
+- 4c2e2624-5d3a-41a5-9a8d-08eca51a0818
+- 5f8869c1-36f4-4a7c-8fcf-68883d9ef656
+- fcc89d57-f517-42d9-9116-71a3975f2034
+- 14d6ca8f-1e7d-43ea-a362-6eacd54686ce
+- f4538389-c07e-4636-ad0a-2995561c42c6
+- 94bd849d-cd97-4b50-ad9c-80b233532cb3
+- df055add-372a-487e-a267-83f62b8e76a7
+- 1f3fde93-f23a-42fb-993d-9df14b706863

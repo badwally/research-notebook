@@ -1,0 +1,216 @@
+field: AI for Longitudinal Temporal Video Analysis
+branches:
+- name: Action Recognition & Classification
+  description: This research area focuses on correctly identifying and categorizing
+    human actions or events within trimmed or continuous video streams [1-3].
+  sub_branches:
+  - name: Skeleton-Based and Pose-Guided Methods
+    description: Architectures that leverage human pose topology and joint coordinates,
+      rather than raw pixels, to model dynamic movement [4, 5].
+    methods:
+    - Spatial Temporal Graph Convolutional Networks (ST-GCN) [2]
+    - Recurrent Pose-Attention Network (RPAN) [6]
+  - name: Convolutional and Recurrent Architectures
+    description: Methods that process spatial features using 2D/3D CNNs and capture
+      temporal dynamics using recurrent nodes like LSTMs [7-9].
+    methods:
+    - VideoLSTM (Convolutional Attention LSTM) [10]
+    - 3D CNNs with Spatio-Temporal Filter Analysis (i3D ResNet) [7, 11]
+  - name: Few-Shot and Unsupervised Learning
+    description: Techniques designed to recognize actions using limited labeled examples
+      or by leveraging self-supervised signals from the data itself [12, 13].
+    methods:
+    - Spatio-Temporal Relation Modeling (STRM) [14]
+    - Temporal Aware Embedding Network (TAEN) [15]
+    - Video Playback Rate Perception (PRP) [16]
+- name: Temporal Action Detection & Localization
+  description: This area extends basic recognition by actively predicting the precise
+    temporal boundaries (start and end times) of specific actions within long, untrimmed
+    videos [1, 17, 18].
+  sub_branches:
+  - name: Transformer and Attention-Based Detectors
+    description: Models using self-attention mechanisms to relate frames across sequences,
+      often addressing issues like temporal feature collapse or rank loss [19, 20].
+    methods:
+    - Self-Feedback DETR [19]
+    - TriDet (Relative Boundary Modeling) [18]
+  - name: Graph-Based Localization
+    description: Approaches that represent video snippets as nodes in a graph to exploit
+      semantic and temporal correlations between segments [21, 22].
+    methods:
+    - G-TAD (Sub-Graph Localization) [21]
+    - GCAN (Graph-based Class-level Attention Network) [22]
+  - name: Boundary Refinement and Post-Processing
+    description: Techniques applied to adjust and refine predicted action boundaries,
+      minimizing quantization errors from temporal downsampling [23, 24].
+    methods:
+    - Gaussian Approximated Post-processing (GAP) [23]
+- name: Video Object Tracking & Trajectory Prediction
+  description: This field is dedicated to spatially identifying objects and tracking
+    their locations, identities, and future trajectories over time [25, 26].
+  sub_branches:
+  - name: Multi-Object Tracking (MOT)
+    description: Systems designed to maintain the identities of multiple moving targets
+      across frames, handling challenges like severe occlusions [26, 27].
+    methods:
+    - FairMOT (Joint Detection and Re-ID via CenterNet) [28]
+    - TransMOT (Spatial-Temporal Graph Transformer) [27]
+    - TubeTK (Bounding Tube Regression) [29]
+  - name: Trajectory and Movement Forecasting
+    description: Architectures that analyze historical spatial positions to forecast
+      the future paths of objects like pedestrians [25].
+    methods:
+    - GraphTCN (Graph Attention with Temporal Convolutional Networks) [30, 31]
+    - Recurrent Autoregressive Networks (RAN) [32]
+  - name: Specialized Domain Tracking
+    description: Tracking solutions built for domain-specific challenges, such as
+      biological microscopy, crowd density estimation, or unmanned aerial vehicles
+      [33-35].
+    methods:
+    - Object-Level Warping Loss (for cell tracking) [34]
+    - AutoTrack (Spatio-Temporal Regularization for UAVs) [33]
+    - YOLOv8 + CSRNet hybrid (Stampede Risk Prediction) [36, 37]
+- name: Video-Language Understanding & Grounding
+  description: This area bridges computer vision and natural language processing,
+    aiming to describe, retrieve, or answer questions about video content based on
+    text [38-40].
+  sub_branches:
+  - name: Spatio-Temporal Video Grounding
+    description: The task of localizing a specific spatial bounding box and temporal
+      duration in a video corresponding to a given natural language query [39, 41].
+    methods:
+    - TubeDETR [39]
+    - Collaborative Static and Dynamic Vision-Language Streams [41]
+    - Text-Visual Prompting (TVP) [42]
+  - name: Large Vision-Language Models (VLMs)
+    description: Massive, pre-trained foundation models capable of reasoning over
+      visual sequences to perform complex instruction-following and grounding [43,
+      44].
+    methods:
+    - Molmo2 (Open-weights Video Grounding) [43]
+    - ReVisionLLM (Recursive VLM for hour-long videos) [44]
+    - VideoChat-R1 (Reinforcement Fine-Tuning with GRPO) [45, 46]
+  - name: Video Captioning and Question Answering
+    description: Generating descriptive text for dense video segments or extracting
+      precise answers based on multi-modal video context [47-49].
+    methods:
+    - iPerceive (Common-Sense Reasoning architecture) [49]
+    - Multimodal Pretraining via MAsked Sequence to Sequence (MASS) [50]
+- name: Biologically Inspired & Advanced Spatio-Temporal Computing
+  description: Alternative paradigms that process spatial-temporal data through brain-inspired
+    algorithms, geometric analysis, or specialized physics-based signals [51, 52].
+  sub_branches:
+  - name: Spiking Neural Networks (SNNs)
+    description: Brain-inspired networks that process asynchronous streams of spikes
+      instead of traditional static frames to drastically reduce noise and improve
+      efficiency [53, 54].
+    methods:
+    - NeuCube (3D Brain-inspired architecture) [55, 56]
+    - Spike Time Dependent Plasticity (STDP) Learning [57]
+  - name: Signal Processing and Stabilization
+    description: Traditional and advanced mathematical algorithms designed to map,
+      stabilize, or encode motion fields [58, 59].
+    methods:
+    - Motion Vector Flow Instance (MVFI) with PCA/LDA [58, 60]
+    - Fourier Phase Correlation with Log-Polar Transformation [59, 61]
+citations:
+  '1': a7d9cefe-fe53-4c3e-ade7-13cc06bdce0b
+  '2': ecaa5c61-0246-4565-8887-19cbfec03934
+  '3': 1d538076-da00-4790-ad76-ab46d1167cde
+  '4': 0432009b-ded7-42fb-b687-89c527399067
+  '5': 3f97fea7-d0bb-459a-8ab3-ceebc7a72727
+  '6': 3f97fea7-d0bb-459a-8ab3-ceebc7a72727
+  '7': 2f26168b-1418-4dc4-aca2-86a47a87856d
+  '8': 2810cbd7-1123-4bd1-8716-bbd2666251eb
+  '9': 0ef1c832-5274-41a4-85c4-057c02713a06
+  '10': 0ef1c832-5274-41a4-85c4-057c02713a06
+  '11': 2f26168b-1418-4dc4-aca2-86a47a87856d
+  '12': 99464d42-5b27-4d21-a952-7bcbb4f2446a
+  '13': 9ad85e67-c996-4e83-907b-5b287db42d33
+  '14': 99464d42-5b27-4d21-a952-7bcbb4f2446a
+  '15': 9ad85e67-c996-4e83-907b-5b287db42d33
+  '16': 31a4aba8-5adf-43a0-b44b-3a65c4bacc13
+  '17': 5151f5e3-78af-4b75-b9f2-50a1336798d1
+  '18': 2ac04896-4a88-4676-9b45-05f9ca08b87f
+  '19': 191243f1-8495-4410-824e-fa8b71b47ba4
+  '20': 2ac04896-4a88-4676-9b45-05f9ca08b87f
+  '21': 8b414028-8737-427d-b773-4c8013f312f1
+  '22': 53028f43-3c3f-466d-a23a-c8f4f11107cf
+  '23': aa7a372c-7e4c-4321-8c3e-da3ed946530d
+  '24': aa7a372c-7e4c-4321-8c3e-da3ed946530d
+  '25': b447657e-80d7-4fc2-a05f-9c46be3a55bf
+  '26': e90734fd-f198-48c1-a975-be894627ec21
+  '27': 0b397496-35be-4acf-9b49-77843cba7613
+  '28': e90734fd-f198-48c1-a975-be894627ec21
+  '29': 878e1455-f119-45ba-8fc3-d67e7a3d2e36
+  '30': b447657e-80d7-4fc2-a05f-9c46be3a55bf
+  '31': b447657e-80d7-4fc2-a05f-9c46be3a55bf
+  '32': 73cb5686-2a2e-44b6-9e76-ed9624715be7
+  '33': 7b15b4dc-19bb-4c34-a800-c417b210e8e9
+  '34': 35985cde-41ae-4dd2-91e1-92f418491567
+  '35': 13198907-3ff6-4dca-a54f-4cc3f13feed2
+  '36': 13198907-3ff6-4dca-a54f-4cc3f13feed2
+  '37': 13198907-3ff6-4dca-a54f-4cc3f13feed2
+  '38': 8e45e0d4-a2b1-4fc9-96e9-819eb0801c00
+  '39': 807380dc-e88b-47a5-9c7c-6b4669f37c03
+  '40': b3008a18-36db-49b3-be94-fc80c820aecc
+  '41': 64fbc85e-03c7-40f4-bf95-39688013f50f
+  '42': ed5a29ed-cab2-4e03-8474-7f99603f477b
+  '43': 7f5be1c3-4351-4c1f-a53b-ec18101c8b12
+  '44': 4b4e0f1f-f330-4511-9e65-e0da3d3e7abb
+  '45': 26d791d0-cff9-46e1-b775-1dd285b245fd
+  '46': 26d791d0-cff9-46e1-b775-1dd285b245fd
+  '47': 62641e98-ec31-483e-87f4-bc753f51de10
+  '48': b1de189d-685c-4055-b262-51bc4867159d
+  '49': ac863fbf-3427-4a31-95ab-6d6e35f77f96
+  '50': 62641e98-ec31-483e-87f4-bc753f51de10
+  '51': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '52': c5615400-4758-4ee2-81d2-f8fbe43a82e5
+  '53': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '54': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '55': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '56': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '57': 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+  '58': c5615400-4758-4ee2-81d2-f8fbe43a82e5
+  '59': c5615400-4758-4ee2-81d2-f8fbe43a82e5
+  '60': c5615400-4758-4ee2-81d2-f8fbe43a82e5
+  '61': c5615400-4758-4ee2-81d2-f8fbe43a82e5
+sources_used:
+- a7d9cefe-fe53-4c3e-ade7-13cc06bdce0b
+- ecaa5c61-0246-4565-8887-19cbfec03934
+- 1d538076-da00-4790-ad76-ab46d1167cde
+- 0432009b-ded7-42fb-b687-89c527399067
+- 3f97fea7-d0bb-459a-8ab3-ceebc7a72727
+- 2f26168b-1418-4dc4-aca2-86a47a87856d
+- 2810cbd7-1123-4bd1-8716-bbd2666251eb
+- 0ef1c832-5274-41a4-85c4-057c02713a06
+- 99464d42-5b27-4d21-a952-7bcbb4f2446a
+- 9ad85e67-c996-4e83-907b-5b287db42d33
+- 31a4aba8-5adf-43a0-b44b-3a65c4bacc13
+- 5151f5e3-78af-4b75-b9f2-50a1336798d1
+- 2ac04896-4a88-4676-9b45-05f9ca08b87f
+- 191243f1-8495-4410-824e-fa8b71b47ba4
+- 8b414028-8737-427d-b773-4c8013f312f1
+- 53028f43-3c3f-466d-a23a-c8f4f11107cf
+- aa7a372c-7e4c-4321-8c3e-da3ed946530d
+- b447657e-80d7-4fc2-a05f-9c46be3a55bf
+- e90734fd-f198-48c1-a975-be894627ec21
+- 0b397496-35be-4acf-9b49-77843cba7613
+- 878e1455-f119-45ba-8fc3-d67e7a3d2e36
+- 73cb5686-2a2e-44b6-9e76-ed9624715be7
+- 7b15b4dc-19bb-4c34-a800-c417b210e8e9
+- 35985cde-41ae-4dd2-91e1-92f418491567
+- 13198907-3ff6-4dca-a54f-4cc3f13feed2
+- 8e45e0d4-a2b1-4fc9-96e9-819eb0801c00
+- 807380dc-e88b-47a5-9c7c-6b4669f37c03
+- b3008a18-36db-49b3-be94-fc80c820aecc
+- 64fbc85e-03c7-40f4-bf95-39688013f50f
+- ed5a29ed-cab2-4e03-8474-7f99603f477b
+- 7f5be1c3-4351-4c1f-a53b-ec18101c8b12
+- 4b4e0f1f-f330-4511-9e65-e0da3d3e7abb
+- 26d791d0-cff9-46e1-b775-1dd285b245fd
+- 62641e98-ec31-483e-87f4-bc753f51de10
+- b1de189d-685c-4055-b262-51bc4867159d
+- ac863fbf-3427-4a31-95ab-6d6e35f77f96
+- 26c1b75d-ceb8-4d8e-9d24-58a36bd44947
+- c5615400-4758-4ee2-81d2-f8fbe43a82e5
