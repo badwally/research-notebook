@@ -20,6 +20,12 @@ data/research/*.json
 # Logs
 logs/*.json
 
+# Claude Code (local settings, worktrees)
+.claude/
+
+# Obsidian app config
+.obsidian/
+
 # IDE
 .idea/
 .vscode/
