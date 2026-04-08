@@ -1,0 +1,58 @@
+research_project: glp1_reward_modulation
+notebook_id: "089b5d0a-af34-40ab-a82d-0cf311d793ac"
+
+taxonomy_prompt: |
+  Analyze the research corpus and identify the major branches of knowledge.
+  Organize into a hierarchical taxonomy with this structure:
+
+  For each AREA, list sub-branches and key methods/findings.
+  Format as:
+  AREA: [branch name]
+    SUB: [sub-branch name]
+      METHOD: [specific method, finding, or concept]
+
+  The corpus covers GLP-1 receptor agonist effects on reward systems.
+  Expected branches may include (but discover from the corpus):
+  - Neuroanatomy of GLP-1 reward circuits (VTA, NAc, lateral septum, amygdala)
+  - Pharmacology of different GLP-1 RAs (semaglutide, tirzepatide, liraglutide, exendin-4)
+  - Behavioral effects (food reward, substance reward, sexual behavior, motivation)
+  - Dose-response and dosing strategies
+  - Clinical side effects (anhedonia, sexual dysfunction, emotional blunting)
+  - Cross-reward generalization vs specificity
+
+investigation_queries:
+  methods: |
+    For the branch "{branch_name}", what are the key methods, drugs, and experimental approaches?
+    For each, describe: what it does, how it was studied, key findings, and limitations.
+    Cite specific sources.
+
+  comparisons: |
+    For the branch "{branch_name}", what are the key comparisons and contrasts?
+    Compare different GLP-1 RAs, brain regions, behavioral outcomes, dosing regimens.
+    What evidence supports selectivity vs generalization of reward effects?
+    Cite specific sources.
+
+  open_problems: |
+    For the branch "{branch_name}", what are the unresolved questions and research gaps?
+    What would need to be studied to determine whether food noise and broader reward
+    dampening are dissociable? What dosing strategies might achieve selective modulation?
+    Cite specific sources.
+
+synthesis_queries:
+  shared_mechanisms: |
+    Across all branches, what neural mechanisms and receptor pathways are shared
+    between food reward modulation and broader reward dampening (substance use,
+    sexual behavior, motivation)? Are there any mechanisms that appear selective
+    to one domain? Cite specific sources.
+
+  dosing_strategies: |
+    What evidence exists across the corpus for dose-dependent effects on reward?
+    Is there a therapeutic window where food noise is reduced but broader reward
+    function is preserved? What do the data suggest about microdosing, extended
+    intervals, or compound switching? Cite specific sources.
+
+  practical_path: |
+    Based on the full corpus, what is the most evidence-supported path for someone
+    who wants to reduce food noise while preserving libido, motivation, and general
+    reward sensitivity? Consider: compound selection (which GLP-1 RA), dosing strategy,
+    adjunctive approaches, and monitoring indicators. Cite specific sources.

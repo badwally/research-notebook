@@ -1,0 +1,93 @@
+domain:
+  topic: "GLP-1 receptor agonist effects on reward system and dosing optimization"
+  field: "neuroendocrinology and obesity pharmacology"
+  description: >
+    Investigating the neurological mechanisms by which GLP-1 receptor agonists
+    (tirzepatide, semaglutide, liraglutide) modulate mesolimbic reward circuitry
+    beyond appetite suppression — specifically food noise reduction vs broader
+    reward dampening (anhedonia, reduced libido, flattened motivation) — and
+    whether these effects are dissociable through dosing strategy, compound
+    selection, or adjunctive therapy.
+
+inclusion_criteria:
+  - "Discusses GLP-1 or GIP/GLP-1 receptor agonist effects on dopaminergic reward pathways"
+  - "Reports on anhedonia, reward blunting, or motivational changes as side effects of incretin therapy"
+  - "Examines dose-response relationships for GLP-1 RA neurological effects"
+  - "Compares pharmacological profiles of different GLP-1 RAs (semaglutide, tirzepatide, liraglutide, retatrutide)"
+  - "Discusses food noise as a distinct neurological phenomenon from generalized reward"
+  - "Proposes or evaluates dosing strategies (microdosing, extended intervals, titration protocols)"
+
+exclusion_criteria:
+  - "Purely focused on weight loss outcomes without discussion of neurological or reward mechanisms"
+  - "Marketing or promotional content for specific GLP-1 RA brands"
+  - "News segments or press coverage without substantive clinical or scientific discussion"
+  - "Content focused exclusively on diabetes management without relevance to reward/appetite neuroscience"
+  - "Anecdotal patient testimonials without clinical or mechanistic framing"
+
+quality_signals:
+  channel_authority:
+    positive_signals:
+      - "Board-certified endocrinologist, obesity medicine specialist, or neuroscientist"
+      - "Academic medical center or research institution affiliation"
+      - "Peer-reviewed publication track record in obesity or neuropharmacology"
+    negative_signals:
+      - "Wellness influencer without clinical credentials"
+      - "Channel primarily sells supplements or alternative therapies"
+  speaker_expertise:
+    positive_signals:
+      - "Cites specific research studies with authors and journals"
+      - "Discusses receptor pharmacology and neural circuitry with precision"
+      - "Differentiates between GLP-1, GIP, and glucagon receptor mechanisms"
+    negative_signals:
+      - "Conflates GLP-1 with other weight loss mechanisms without distinction"
+      - "Makes unsupported claims about microdosing or off-label protocols"
+  content_depth:
+    positive_signals:
+      - "Explores mechanism of action at receptor and circuit level"
+      - "Discusses dose-dependent effects with reference to clinical data"
+      - "Addresses individual variation in response"
+    negative_signals:
+      - "Surface-level overview without mechanistic detail"
+      - "Focuses on celebrity use or cultural trends rather than science"
+  publication_venue:
+    positive_signals:
+      - "Published in a peer-reviewed journal or top-tier conference"
+      - "Journal with established impact in endocrinology, neuroscience, or pharmacology"
+    negative_signals:
+      - "Predatory journal or pay-to-publish venue"
+      - "No venue information and no citation history"
+  methodology_rigor:
+    positive_signals:
+      - "Randomized controlled trial or systematic review"
+      - "Clearly reported methodology, sample size, and statistical analysis"
+      - "Pre-registered study or published protocol"
+    negative_signals:
+      - "Case report presented as generalizable evidence"
+      - "No comparison group or control condition"
+
+academic_sources:
+  arxiv:
+    enabled: true
+    categories: ["q-bio.NC", "q-bio.QM"]
+    date_range_months: 36
+    sort_by: relevance
+  pubmed:
+    enabled: true
+    mesh_terms:
+      - "Glucagon-Like Peptide 1"
+      - "Reward"
+      - "Dopamine"
+      - "Anhedonia"
+      - "Appetite Regulation"
+    publication_types: ["Journal Article", "Review", "Meta-Analysis", "Systematic Review"]
+    date_range_months: 36
+
+scoring_rubric:
+  scale: "1-5"
+  descriptions:
+    1: "Not relevant — no discussion of GLP-1 RA reward/neurological effects"
+    2: "Tangentially relevant — mentions GLP-1 but focus is elsewhere"
+    3: "Moderately relevant — discusses GLP-1 reward effects but lacks depth or specificity"
+    4: "Highly relevant — substantive discussion of mechanisms, dosing, or comparative pharmacology"
+    5: "Essential — directly addresses the core question of dissociating food noise from reward dampening"
+  inclusion_threshold: 3
